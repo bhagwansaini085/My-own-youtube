@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>My Channels</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#14181f">
+<style>
+:root{--bg:#f3f5f7;--card:#fff;--ink:#14181f;--mute:#5d6673;--line:#dde2e8;--red:#e5322d;color-scheme:light}
+@media(prefers-color-scheme:dark){:root{--bg:#14181f;--card:#1d232c;--ink:#eef1f4;--mute:#9aa4b2;--line:#2b333f;color-scheme:dark}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.4 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;padding-bottom:env(safe-area-inset-bottom)}
+header{position:sticky;top:0;z-index:5;background:var(--bg);border-bottom:1px solid var(--line);padding:env(safe-area-inset-top) 12px 0}
+.bar{display:flex;align-items:center;height:52px}.bar>*+*{margin-left:8px}
+h1{font-size:20px;margin:0;flex:1;letter-spacing:-.3px}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+.icon{width:40px;height:40px;border-radius:50%;font-size:20px}
+.icon:hover{background:var(--line)}
+.chips{display:flex;overflow-x:auto;padding:0 0 10px;scrollbar-width:none}
+.chips>*+*{margin-left:8px}.chips::-webkit-scrollbar{display:none}
+.chip{flex:none;display:flex;align-items:center;padding:6px 12px 6px 6px;border-radius:99px;background:var(--card);border:1px solid var(--line);font-size:14px}
+.chip img{width:24px;height:24px;border-radius:50%;margin-right:6px}
+.chip.all{padding-left:12px}
+.chip[aria-pressed=true]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+button:focus,input:focus,textarea:focus,a:focus{outline:2px solid var(--red);outline-offset:2px}
+main{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px 16px;padding:16px 12px;max-width:1400px;margin:auto}
+.v{text-align:left;display:block;width:100%}
+.v .th{position:relative;height:0;padding-top:56.25%;border-radius:12px;overflow:hidden;background:var(--line)}
+.v img.t{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block}
+.v .meta{display:flex;padding:10px 2px 0}
+.v .av{width:36px;height:36px;border-radius:50%;flex:none;margin-right:10px}
+.v b{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;font-weight:600;font-size:15px}
+.v small{color:var(--mute)}
+.msg{grid-column:1/-1;text-align:center;color:var(--mute);padding:48px 16px}
+.msg button{margin-top:12px;background:var(--red);color:#fff;padding:10px 18px;border-radius:99px}
+dialog{border:0;border-radius:16px;background:var(--card);color:var(--ink);padding:0;max-width:min(920px,96vw);width:100%}
+dialog::backdrop{background:rgba(0,0,0,.7)}
+.player{position:relative;height:0;padding-top:56.25%;width:100%;background:#000}
+.player iframe{position:absolute;top:0;left:0;width:100%;height:100%;border:0;display:block}
+.ptitle{padding:12px 16px;display:flex;align-items:center}.ptitle>*+*{margin-left:12px}.ptitle a{color:var(--mute);font-size:14px;white-space:nowrap}
+.ptitle b{flex:1}
+form.set{padding:20px;display:grid;gap:12px;max-width:520px}
+form.set label{display:grid;gap:4px;font-weight:600;font-size:14px}
+form.set small{font-weight:400;color:var(--mute)}
+input,textarea{font:inherit;color:inherit;background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:10px;width:100%}
+textarea{min-height:120px}
+.row{display:flex;justify-content:flex-end}.row>*+*{margin-left:8px}
+.row button{padding:10px 18px;border-radius:99px;border:1px solid var(--line)}
+.row .go{background:var(--red);color:#fff;border-color:var(--red)}
+body.tv{font-size:22px}
+body.tv header{padding-left:4vw;padding-right:4vw}
+body.tv main{grid-template-columns:repeat(auto-fill,minmax(380px,1fr));padding:24px 4vw;grid-gap:36px 28px}
+body.tv .chip{font-size:20px}body.tv .chip img{width:32px;height:32px}
+body.tv .icon{width:56px;height:56px;font-size:28px}
+body.tv .v b{font-size:20px}
+body.tv button:focus,body.tv a:focus{outline:5px solid var(--red);outline-offset:5px;border-radius:14px}
+body.tv .chip:focus{outline-offset:3px;border-radius:99px}
+body.tv dialog{max-width:100vw;border-radius:0}
+h1{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.sw{display:flex;align-items:center;font-size:13px;padding:6px 8px;border-radius:99px;white-space:nowrap}
+.sw i{width:36px;height:20px;border-radius:10px;background:var(--line);position:relative;margin-left:8px;flex:none}
+.sw i::after{content:"";position:absolute;top:2px;left:2px;width:16px;height:16px;border-radius:50%;background:#fff;transition:left .15s}
+.sw[aria-checked=true] i{background:var(--red)}
+.sw[aria-checked=true] i::after{left:18px}
+#sbar{display:none;padding:0 0 10px}
+#sbar>*+*{margin-left:8px}
+#sbar button{background:var(--red);color:#fff;padding:0 20px;border-radius:99px}
+body.tv .sw{font-size:20px}body.tv .sw i{width:52px;height:28px;border-radius:14px}
+body.tv .sw i::after{width:22px;height:22px}body.tv .sw[aria-checked=true] i::after{left:27px}
+body.tv #sbar input{font-size:22px}
+</style>
+</head>
+<body>
+<header>
+  <div class="bar"><h1>My Channels</h1><button class="sw" id="mode" role="switch" aria-checked="true">Selected only<i></i></button><button class="icon" id="refresh" aria-label="Refresh">↻</button><button class="icon" id="cog" aria-label="Settings">⚙</button></div>
+  <div class="chips" id="chips"></div>
+  <form id="sbar"><input id="q" type="search" placeholder="Search YouTube" autocomplete="off"><button type="submit">Search</button></form>
+</header>
+<main id="feed"></main>
+
+<dialog id="pd"><div class="player" id="pl"></div><div class="ptitle"><b id="pt"></b><a id="yt" target="_blank" rel="noopener">Open on YouTube</a><button class="icon" id="pc" aria-label="Close">✕</button></div></dialog>
+
+<dialog id="sd">
+<form class="set" id="sf" method="dialog">
+  <label>YouTube API key<input id="key" autocomplete="off" placeholder="AIza…"><small>Free from Google Cloud → enable “YouTube Data API v3”.</small></label>
+  <label>Channels<textarea id="chs" placeholder="@mkbhd&#10;@veritasium&#10;UCxxxxxxxxxxxxxxxxxxxxxx"></textarea><small>One per line: a @handle or a channel ID (starts with UC).</small></label>
+  <label>Setup link for another device<input id="tvl" readonly><small>Open this once on your TV to copy your key and channels there.</small></label>
+  <div class="row"><button type="button" id="sx">Cancel</button><button class="go" id="ss" type="submit" value="save">Save</button></div>
+</form>
+</dialog>
+
+<script>
+// Optional: put defaults here so you don't have to type them on each device.
+const DEFAULT_KEY = "";
+const DEFAULT_CHANNELS = []; // e.g. ["@mkbhd","@veritasium"]
+
+const $ = id => document.getElementById(id);
+function put(el, n){ while (el.firstChild) el.removeChild(el.firstChild); if (n) el.appendChild(n); }
+const store = {
+  get(k, d){ try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch (_) { return d; } },
+  set(k, v){ try { localStorage.setItem(k, JSON.stringify(v)); } catch (_) {} }
+};
+(function(){
+  const m = location.hash.match(/cfg=([^&]+)/); if (!m) return;
+  try { const o = JSON.parse(decodeURIComponent(escape(atob(decodeURIComponent(m[1])))));
+    if (o.k) store.set("key", o.k); if (Array.isArray(o.c)) store.set("channels", o.c); } catch (_) {}
+  history.replaceState(null, "", location.pathname + location.search);
+})();
+let key = store.get("key", DEFAULT_KEY);
+let channels = store.get("channels", DEFAULT_CHANNELS);
+let videos = [], info = {}, active = "all";
+let mode = store.get("mode", "sel"), query = "";
+function dec(t){ const x = document.createElement("textarea"); x.innerHTML = t; return x.value; }
+
+// "All of YouTube" mode: popular videos, or search results
+async function loadAll(force){
+  if (!key){ empty("Add your API key to see videos."); return; }
+  const c = store.get("feedAll", null);
+  if (!force && c && c.q === query && Date.now() - c.t < TTL){ videos = c.v; info = {}; render(); firstFocus(); return; }
+  $("feed").innerHTML = '<p class="msg">Loading…</p>';
+  try {
+    let items;
+    if (query){
+      const j = await api("search", { part: "snippet", type: "video", maxResults: 24, q: query, safeSearch: "moderate" });
+      items = j.items.map(i => ({ id: i.id.videoId, s: i.snippet, esc: true }));
+    } else {
+      const j = await api("videos", { part: "snippet", chart: "mostPopular", maxResults: 24 });
+      items = j.items.map(i => ({ id: i.id, s: i.snippet }));
+    }
+    videos = items.map(i => ({ id: i.id, title: i.esc ? dec(i.s.title) : i.s.title, at: i.s.publishedAt,
+      ch: i.s.channelId, cn: i.esc ? dec(i.s.channelTitle) : i.s.channelTitle,
+      th: (i.s.thumbnails.medium || i.s.thumbnails.default).url }));
+    info = {};
+    store.set("feedAll", { t: Date.now(), q: query, v: videos });
+    render(); firstFocus();
+  } catch (e) { empty(e.message + ". Check your API key in settings."); }
+}
+
+function applyMode(){
+  const sel = mode === "sel";
+  $("mode").setAttribute("aria-checked", sel);
+  $("sbar").style.display = sel ? "none" : "flex";
+  $("chips").style.display = sel ? "flex" : "none";
+}
+const API = "https://www.googleapis.com/youtube/v3/";
+const TTL = 30 * 60 * 1000;
+
+async function api(path, params){
+  const r = await fetch(API + path + "?" + new URLSearchParams(Object.assign({}, params, {key})));
+  const j = await r.json();
+  if (!r.ok) throw new Error((j.error && j.error.message) || "Request failed");
+  return j;
+}
+
+async function resolve(input){
+  const cache = store.get("resolved", {});
+  if (cache[input]) return cache[input];
+  const idm = input.match(/UC[\w-]{22}/);
+  const p = idm ? { id: idm[0] } : { forHandle: input.replace(/^.*youtube\.com\//, "").replace(/^@?/, "@") };
+  const j = await api("channels", Object.assign({ part: "snippet" }, p));
+  const c = (j.items || [])[0];
+  if (!c) throw new Error("Channel not found: " + input);
+  const out = { id: c.id, title: c.snippet.title, av: c.snippet.thumbnails.default.url };
+  cache[input] = out; store.set("resolved", cache);
+  return out;
+}
+
+async function load(force){
+  if (mode === "all") return loadAll(force);
+  const feed = $("feed");
+  if (!key || !channels.length){ empty("Add your API key and channels to see videos."); renderChips(); return; }
+  const c = store.get("feed", null);
+  if (!force && c && Date.now() - c.t < TTL && JSON.stringify(c.ch) === JSON.stringify(channels)){
+    videos = c.v; info = c.i; render(); firstFocus(); return;
+  }
+  feed.innerHTML = '<p class="msg">Loading…</p>';
+  try {
+    const res = await Promise.all(channels.map(async ch => {
+      const c = await resolve(ch);
+      const j = await api("playlistItems", { part: "snippet", maxResults: 12, playlistId: "UU" + c.id.slice(2) });
+      return { c, items: j.items };
+    }));
+    info = {}; videos = [];
+    res.forEach(({ c, items }) => {
+      info[c.id] = c;
+      items.forEach(i => {
+        const s = i.snippet;
+        if (s.title === "Private video" || s.title === "Deleted video") return;
+        videos.push({ id: s.resourceId.videoId, title: s.title, at: s.publishedAt, ch: c.id,
+          th: (s.thumbnails.medium || s.thumbnails.default).url });
+      });
+    });
+    videos.sort((a, b) => b.at.localeCompare(a.at));
+    store.set("feed", { t: Date.now(), ch: channels, v: videos, i: info });
+    render(); firstFocus();
+  } catch (e) { empty(e.message + ". Check your API key in settings."); }
+}
+
+function empty(t){
+  $("feed").innerHTML = "";
+  const p = document.createElement("div"); p.className = "msg";
+  p.textContent = t; const b = document.createElement("button");
+  b.textContent = "Open settings"; b.onclick = openSettings; p.append(document.createElement("br"), b);
+  $("feed").append(p);
+}
+
+function ago(iso){
+  const s = (Date.now() - new Date(iso)) / 1000;
+  for (const [n, u] of [[31536000,"year"],[2592000,"month"],[604800,"week"],[86400,"day"],[3600,"hour"],[60,"minute"]])
+    if (s >= n){ const v = Math.floor(s / n); return v + " " + u + (v > 1 ? "s" : "") + " ago"; }
+  return "just now";
+}
+
+function renderChips(){
+  const box = $("chips"); box.innerHTML = "";
+  const mk = (label, id, av) => {
+    const b = document.createElement("button");
+    b.className = "chip" + (av ? "" : " all"); b.setAttribute("aria-pressed", active === id);
+    if (av){ const i = document.createElement("img"); i.src = av; i.alt = ""; b.append(i); }
+    b.append(label); b.onclick = () => { active = id; renderChips(); render(); };
+    box.append(b);
+  };
+  if (Object.keys(info).length) mk("All", "all");
+  Object.values(info).forEach(c => mk(c.title, c.id, c.av));
+}
+
+function render(){
+  renderChips();
+  const feed = $("feed"); feed.innerHTML = "";
+  const list = videos.filter(v => active === "all" || v.ch === active);
+  if (!list.length) return empty("No videos found.");
+  list.forEach(v => {
+    const c = info[v.ch] || {};
+    const b = document.createElement("button"); b.className = "v";
+    b.innerHTML = '<div class="th"><img class="t" loading="lazy" alt=""></div><div class="meta"><img class="av" alt=""><div><b></b><small></small></div></div>';
+    b.querySelector(".t").src = v.th; if (c.av) b.querySelector(".av").src = c.av; else b.querySelector(".av").style.display = "none";
+    b.querySelector("b").textContent = v.title;
+    b.querySelector("small").textContent = (c.title || v.cn || "") + " · " + ago(v.at);
+    b.onclick = () => play(v);
+    feed.append(b);
+  });
+}
+
+function play(v){
+  $("pt").textContent = v.title; $("yt").href = "https://www.youtube.com/watch?v=" + v.id;
+  const f = document.createElement("iframe");
+  f.src = "https://www.youtube-nocookie.com/embed/" + v.id + "?autoplay=1&rel=0&playsinline=1";
+  f.allow = "autoplay; encrypted-media; picture-in-picture; fullscreen"; f.allowFullscreen = true;
+  put($("pl"), f); $("pd").showModal();
+}
+$("pc").onclick = () => $("pd").close();
+$("pd").addEventListener("close", () => put($("pl")));
+$("pd").addEventListener("click", e => { if (e.target === $("pd")) $("pd").close(); });
+
+function openSettings(){
+  $("key").value = key; $("chs").value = channels.join("\n");
+  try { $("tvl").value = location.origin + location.pathname + "?tv=1#cfg=" + encodeURIComponent(btoa(unescape(encodeURIComponent(JSON.stringify({ k: key, c: channels}))))); } catch (_) {}
+  $("sd").showModal();
+}
+$("cog").onclick = openSettings;
+$("sx").onclick = () => $("sd").close();
+$("sf").addEventListener("submit", () => {
+  key = $("key").value.trim();
+  channels = $("chs").value.split("\n").map(s => s.trim()).filter(Boolean);
+  store.set("key", key); store.set("channels", channels); active = "all";
+  load(true);
+});
+$("refresh").onclick = () => load(true);
+$("mode").onclick = () => {
+  mode = mode === "sel" ? "all" : "sel"; store.set("mode", mode);
+  active = "all"; query = ""; $("q").value = ""; applyMode(); load();
+};
+$("sbar").addEventListener("submit", e => { e.preventDefault(); query = $("q").value.trim(); loadAll(true); });
+applyMode();
+
+const TV = /SMART-?TV|Tizen|Web0S|webOS|Android TV|AFT|BRAVIA|HbbTV|CrKey|GoogleTV/i.test(navigator.userAgent) || /[?&]tv=1/.test(location.search) || store.get("tv", false);
+if (/[?&]tv=1/.test(location.search)) store.set("tv", true);
+if (TV) document.body.classList.add("tv");
+
+function firstFocus(){
+  if (!TV || document.querySelector("dialog[open]")) return;
+  const f = document.querySelector(".v"); if (f) f.focus();
+}
+function nav(dir){
+  const root = document.querySelector("dialog[open]") || document;
+  const els = Array.prototype.slice.call(root.querySelectorAll("button,input,textarea,a[href]")).filter(e => e.offsetParent !== null);
+  const cur = document.activeElement;
+  if (els.indexOf(cur) < 0){ if (els[0]) els[0].focus(); return; }
+  const a = cur.getBoundingClientRect(), ax = a.left + a.width / 2, ay = a.top + a.height / 2;
+  let best = null, bs = 1e9;
+  els.forEach(e => {
+    if (e === cur) return;
+    const r = e.getBoundingClientRect(), x = r.left + r.width / 2 - ax, y = r.top + r.height / 2 - ay;
+    const along = dir === "left" ? -x : dir === "right" ? x : dir === "up" ? -y : y;
+    if (along <= 1) return;
+    const across = (dir === "left" || dir === "right") ? Math.abs(y) : Math.abs(x);
+    const sc = along + across * 2.5;
+    if (sc < bs){ bs = sc; best = e; }
+  });
+  if (best){ best.focus(); best.scrollIntoView({ block: "center", inline: "center" }); }
+}
+document.addEventListener("keydown", e => {
+  const t = e.target.tagName, typing = t === "INPUT" || t === "TEXTAREA";
+  const back = e.keyCode === 27 || e.keyCode === 461 || e.keyCode === 10009 || (e.keyCode === 8 && !typing);
+  if (back){
+    const d = document.querySelector("dialog[open]");
+    if (d){ d.close(); e.preventDefault(); }
+    return;
+  }
+  if (!TV) return;
+  const dir = { 37: "left", 38: "up", 39: "right", 40: "down" }[e.keyCode];
+  if (!dir || (typing && (dir === "left" || dir === "right"))) return;
+  e.preventDefault(); nav(dir);
+});
+
+if ("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js").catch(() => {});
+load();
+</script>
+</body>
+</html>
