@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0f0f0f">
+<link rel="manifest" href="manifest.json">
+<title>My Channels</title>
+<style>
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:#0f0f0f;color:#f1f1f1;font-family:Roboto,Arial,sans-serif}
+body{padding-bottom:40px}
+button,input,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+.fx:focus{outline:3px solid #3ea6ff;outline-offset:2px}
+.top{display:flex;align-items:center;padding:8px 10px}
+.logo{display:flex;align-items:center;font-weight:700;font-size:18px;letter-spacing:-.5px}
+.logo i{display:inline-block;width:30px;height:21px;background:#f00;border-radius:6px;margin-right:6px;position:relative}
+.logo i:after{content:"";position:absolute;left:12px;top:5px;border-left:9px solid #fff;border-top:5.5px solid transparent;border-bottom:5.5px solid transparent}
+.sp{flex:1}
+.ib{background:none;border:0;font-size:20px;padding:8px;border-radius:50%;line-height:1}
+.sw{display:flex;align-items:center;font-size:13px;margin-right:4px;cursor:pointer;position:relative;padding:4px;border-radius:8px}
+.sw input{position:absolute;opacity:0;width:0;height:0}
+.tr{width:34px;height:18px;border-radius:9px;background:#606060;margin-right:6px;position:relative}
+.tr:after{content:"";position:absolute;top:2px;left:2px;width:14px;height:14px;border-radius:50%;background:#fff}
+.sw input:checked+.tr{background:#3ea6ff}
+.sw input:checked+.tr:after{left:18px}
+.sb{display:flex;padding:0 12px}
+.sb input{flex:1;min-width:0;height:40px;border:1px solid #303030;background:#121212;border-radius:20px 0 0 20px;padding:0 16px;font-size:16px;outline:0}
+.sb input:focus{border-color:#3ea6ff}
+.sb button{width:58px;height:40px;border:1px solid #303030;border-left:0;background:#222;border-radius:0 20px 20px 0;font-size:17px}
+.hint{font-size:12px;color:#aaa;padding:7px 14px 2px;line-height:1.4}
+.chips{position:sticky;top:0;z-index:5;background:#0f0f0f;white-space:nowrap;overflow-x:auto;padding:8px 8px 6px;-webkit-overflow-scrolling:touch}
+.chip{display:inline-block;background:#272727;border-radius:8px;padding:7px 12px;margin-right:8px;font-size:14px;font-weight:500;cursor:pointer}
+.chip.on{background:#f1f1f1;color:#0f0f0f}
+#grid{display:flex;flex-wrap:wrap;padding-top:8px}
+.card{width:100%;margin:0 0 20px;cursor:pointer;display:block}
+.th{position:relative;width:100%;padding-top:56.25%;background:#222;overflow:hidden}
+.th img{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover}
+.du{position:absolute;right:6px;bottom:6px;background:rgba(0,0,0,.8);font-size:12px;font-weight:500;padding:1px 5px;border-radius:4px}
+.mt{display:flex;padding:10px 12px 0}
+.av{width:36px;height:36px;border-radius:50%;background:#3a3a3a;margin-right:12px;flex:none;object-fit:cover;text-align:center;line-height:36px;font-weight:700}
+.tt{font-size:15px;font-weight:500;line-height:1.3;max-height:2.6em;overflow:hidden}
+.sub{font-size:12px;color:#aaa;margin-top:4px;line-height:1.4}
+.msg{width:100%;padding:36px 18px;text-align:center;color:#aaa;line-height:1.5}
+.more{margin:6px auto 16px;background:#272727;border-radius:20px;padding:10px 26px;text-align:center;width:180px;cursor:pointer}
+.ov{position:fixed;left:0;top:0;right:0;bottom:0;background:rgba(0,0,0,.92);z-index:20;display:none;overflow:auto}
+.ov.show{display:block}
+.pw{max-width:960px;margin:0 auto}
+.vp{position:relative;width:100%;padding-top:56.25%;background:#000}
+.vp iframe{position:absolute;top:0;left:0;width:100%;height:100%;border:0}
+#pl{background:#0f0f0f}
+.vsk{position:sticky;top:0;z-index:3;background:#000}
+.pbar{height:40px;display:flex;align-items:center;padding:0 6px}
+.vi{padding:12px 14px}
+.vt{font-size:18px;font-weight:600;line-height:1.3}
+.vm{font-size:13px;color:#aaa;margin-top:6px}
+.vc{display:flex;align-items:center;margin-top:12px}
+.vc .av{margin-right:10px}
+.vc b{flex:1;font-size:15px}
+.lk{background:#272727;border-radius:18px;padding:8px 14px;font-size:14px}
+.vd{background:#272727;border-radius:12px;padding:10px 12px;margin-top:12px;font-size:14px;line-height:1.45;white-space:pre-wrap;max-height:4.4em;overflow:hidden;word-wrap:break-word;cursor:pointer}
+.vd.open{max-height:none}
+.nx{font-size:15px;font-weight:600;padding:10px 14px 6px}
+.rw{display:flex;padding:6px 12px 10px;cursor:pointer}
+.rt{width:42%;max-width:200px;flex:none;margin-right:10px}
+.rt .th{border-radius:8px}
+.rw .tt{font-size:14px}
+html.tv .vt{font-size:26px}
+html.tv .rw .tt{font-size:19px}
+.btn{display:inline-block;background:#272727;border:0;border-radius:18px;padding:9px 14px;margin-left:6px;font-size:14px;color:#f1f1f1;text-decoration:none;white-space:nowrap}
+.btn.pri{background:#3ea6ff;color:#0f0f0f;font-weight:600}
+.pn{background:#212121;max-width:560px;margin:0 auto;min-height:100%;padding:16px}
+.pn h3{margin:0 0 10px}
+.pn label{display:block;font-size:13px;color:#aaa;margin:14px 0 5px}
+.pn input,.pn textarea{width:100%;background:#121212;border:1px solid #444;border-radius:8px;padding:10px;font-size:15px}
+.sr{font-size:13px;padding:4px 0;line-height:1.4}
+.sr span{color:#aaa}
+.acts{text-align:right;margin-top:18px}
+html.tv .logo{font-size:28px}
+html.tv .sw,html.tv .hint{font-size:18px}
+html.tv .ib{font-size:30px}
+html.tv .chip{font-size:20px;padding:10px 18px}
+html.tv .tt{font-size:21px}
+html.tv .sub{font-size:16px}
+html.tv .sb input{height:52px;font-size:20px}
+html.tv .sb button{height:52px}
+@media(min-width:600px){
+.card{width:calc(50% - 16px);margin:0 8px 24px}
+.th{border-radius:12px}
+.hint,.sb,.top{max-width:900px}
+.top,.sb,.hint{margin-left:auto;margin-right:auto}
+}
+@media(min-width:900px){.card{width:calc(33.33% - 16px)}.top,.sb,.hint{max-width:1100px}}
+@media(min-width:1300px){.card{width:calc(25% - 16px)}}
+</style>
+</head>
+<body>
+<div class="top">
+ <div class="logo"><i></i>My Channels</div>
+ <div class="sp"></div>
+ <label class="sw fx" tabindex="0"><input type="checkbox" id="mode"><span class="tr"></span>Selected only</label>
+ <button class="ib fx" id="rf" title="Refresh">&#8635;</button>
+ <button class="ib fx" id="gs" title="Settings">&#9881;</button>
+</div>
+<form class="sb" id="sf" onsubmit="return false">
+ <input id="q" class="fx" type="search" autocomplete="off">
+ <button class="fx" id="qb" type="submit">&#128269;</button>
+</form>
+<div class="hint" id="hint"></div>
+<div class="chips" id="chips"></div>
+<div id="grid"></div>
+
+<div class="ov" id="pl"><div class="pw">
+ <div class="vsk"><div class="pbar"><button class="ib fx" id="pc" title="Band karo"><svg width="26" height="26" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6" stroke="#fff" stroke-width="2.5" fill="none"/></svg></button></div>
+ <div class="vp" id="vp"></div></div>
+ <div class="vi" id="vi"></div>
+ <div id="rl"></div>
+</div></div>
+
+<div class="ov" id="st"><div class="pn">
+ <h3>Settings</h3>
+ <label>YouTube API key</label>
+ <input id="ki" class="fx" type="password" autocomplete="off" placeholder="API key yahan paste karo">
+ <label>Channels (ek line me ek: @handle, UC... ID ya naam)</label>
+ <textarea id="ci" class="fx" rows="9"></textarea>
+ <label>Channel status</label>
+ <div id="ss"></div>
+ <label>Dusre device (TV) ke liye setup link</label>
+ <button class="btn fx" id="mk" type="button">Link banao</button>
+ <input id="sl" class="fx" readonly style="margin-top:8px;display:none">
+ <div class="acts">
+  <button class="btn fx" id="cc" type="button">Cache saaf</button>
+  <button class="btn fx" id="sc" type="button">Cancel</button>
+  <button class="btn pri fx" id="ss2" type="button">Save</button>
+ </div>
+</div></div>
+
+<script>
+(function(){
+var $=function(i){return document.getElementById(i)};
+var L=window.localStorage;
+function ld(k,d){try{var v=JSON.parse(L.getItem(k));return v==null?d:v}catch(e){return d}}
+function sv(k,v){try{L.setItem(k,JSON.stringify(v))}catch(e){}}
+var DEF=['@NextToppers23','@Mission_JEET','@exphub10th','@Aarambh9_10','@Utkarsh9thand10th','@pw_rbsewallah','@pwrbseenglishmedium9thto12th','@PW-Foundation','@Class10Udaan','@digrajsinghrajput214','@dearsir','@ShobhitNirwan17','@magnetbrainseducation','UCwDWzhNMMq8WqsvX6_TO2eQ','UCMY7ZvLB6-DnuSis_2s37_A'];
+var TV=/SMART-?TV|Tizen|Web0S|WebOS|NetCast|AFT|Android TV|BRAVIA|HbbTV|VIDAA|CrKey|Roku|Fire TV/i.test(navigator.userAgent)||/[?&]tv=1/.test(location.search);
+if(TV)document.documentElement.className='tv';
+var KEY=ld('mc_key',''),CH=ld('mc_ch',null)||DEF.slice(),RES=ld('mc_res',{}),SEL=ld('mc_mode',true);
+var SV=[],OV=[],VIEW=[],ACT='',Q='',OQ='',SHOW=36,ST={},TK=0,LF=null;
+try{var hm=location.hash.match(/cfg=([^&]+)/);if(hm){var o=JSON.parse(decodeURIComponent(escape(atob(decodeURIComponent(hm[1])))));if(o.k){KEY=o.k;sv('mc_key',KEY)}if(o.c&&o.c.length){CH=o.c;sv('mc_ch',CH)}history.replaceState(null,'',location.pathname+location.search)}}catch(e){}
+
+function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+function up(e,c){while(e&&e!==document){if(e.className&&(' '+e.className+' ').indexOf(' '+c+' ')>-1)return e;e=e.parentNode}return null}
+function thumb(id){return'https://i.ytimg.com/vi/'+id+'/mqdefault.jpg'}
+function dur(s){var m=/^PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?$/.exec(s||'');if(!m)return'';var h=+m[1]||0,mi=+m[2]||0,se=+m[3]||0;if(!h&&!mi&&!se)return'LIVE';return(h?h+':'+(mi<10?'0':'')+mi:mi)+':'+(se<10?'0':'')+se}
+function nf(n){n=+n;if(!n&&n!==0)return'';var r=n>=1e6?(n/1e6).toFixed(1).replace('.0','')+'M':n>=1e3?(n/1e3).toFixed(1).replace('.0','')+'K':''+n;return r+' views'}
+function ago(d){var s=(Date.now()-new Date(d).getTime())/1000;if(s<0)s=0;var u=[[31536000,'saal'],[2592000,'mahine'],[86400,'din'],[3600,'ghante'],[60,'minute']];for(var i=0;i<u.length;i++){var n=Math.floor(s/u[i][0]);if(n>=1)return n+' '+u[i][1]+' pehle'}return'abhi'}
+function emsg(e){var r=e.reason||'';if(/quota|dailyLimit|rateLimit/i.test(r))return'Aaj ka free quota khatam ho gaya. Kal dobara chalega.';if(/keyInvalid|badRequest/i.test(r)||/API key/i.test(e.message))return'API key galat hai. Settings me check karo.';if(/forbidden|accessNotConfigured/i.test(r))return'API key ko YouTube Data API v3 ki permission nahi hai.';return e.message||'Network error'}
+function fatal(e){return/quota|dailyLimit|keyInvalid|accessNotConfigured|forbidden/i.test(e.reason||'')}
+
+function api(ep,p){
+ var u='https://www.googleapis.com/youtube/v3/'+ep+'?key='+encodeURIComponent(KEY);
+ for(var k in p)u+='&'+k+'='+encodeURIComponent(p[k]);
+ return fetch(u).then(function(r){return r.json().then(function(j){
+  if(j.error){var e=new Error(j.error.message||'API error');e.reason=(j.error.errors&&j.error.errors[0]&&j.error.errors[0].reason)||'';throw e}
+  return j})})
+}
+function kind(s){s=String(s).trim();var m=s.match(/(UC[\w-]{22})/);if(m)return{t:'id',v:m[1]};m=s.match(/@([\w.\-]+)/);if(m)return{t:'h',v:'@'+m[1]};return{t:'n',v:s}}
+function info(c){return{id:c.id,title:c.snippet.title,th:(c.snippet.thumbnails&&c.snippet.thumbnails['default']&&c.snippet.thumbnails['default'].url)||''}}
+
+function resolve(){
+ var need=[],ids=[],jobs=[];
+ CH.forEach(function(s){if(RES[s]&&RES[s].id)return;var k=kind(s);if(k.t==='id')ids.push(s);else need.push(s)});
+ if(ids.length){jobs.push(api('channels',{part:'snippet',id:ids.map(function(s){return kind(s).v}).join(','),maxResults:50}).then(function(j){
+  (j.items||[]).forEach(function(c){ids.forEach(function(s){if(kind(s).v===c.id)RES[s]=info(c)})})}))}
+ need.forEach(function(s){
+  var k=kind(s),p;
+  if(k.t==='h')p=api('channels',{part:'snippet',forHandle:k.v}).then(function(j){return j.items&&j.items[0]?info(j.items[0]):null});
+  else p=api('search',{part:'snippet',type:'channel',q:k.v,maxResults:1}).then(function(j){var i=j.items&&j.items[0];return i?{id:i.snippet.channelId,title:i.snippet.channelTitle||i.snippet.title,th:''}:null});
+  jobs.push(p.then(function(r){if(r)RES[s]=r}).catch(function(e){ST[s]=emsg(e);if(fatal(e))throw e}))
+ });
+ return Promise.all(jobs).then(function(){sv('mc_res',RES)});
+}
+function details(v){
+ var map={},ch=[];
+ for(var i=0;i<v.length;i+=50)ch.push(v.slice(i,i+50).map(function(x){return x.id}).join(','));
+ return Promise.all(ch.map(function(ids){return api('videos',{part:'contentDetails,statistics',id:ids,maxResults:50}).then(function(j){(j.items||[]).forEach(function(x){map[x.id]=x})}).catch(function(){})})).then(function(){
+  v.forEach(function(x){var m=map[x.id];if(m){x.du=m.contentDetails.duration;x.vw=m.statistics&&m.statistics.viewCount}});return v})
+}
+function loadSel(force){
+ var sig=CH.join('|'),c=ld('mc_feed',null);
+ if(!force&&c&&c.sig===sig&&Date.now()-c.t<18e5){SV=c.v;ST=c.st||{};return Promise.resolve()}
+ ST={};
+ return resolve().then(function(){
+  var seen={},list=[];
+  CH.forEach(function(s){var r=RES[s];if(r&&r.id){if(!seen[r.id]){seen[r.id]=1;list.push(r)}}else if(!ST[s])ST[s]='Channel nahi mila'});
+  return Promise.all(list.map(function(r){
+   return api('playlistItems',{part:'snippet,contentDetails',playlistId:'UU'+r.id.slice(2),maxResults:30}).then(function(j){
+    return(j.items||[]).filter(function(i){var t=i.snippet.title;return t!=='Private video'&&t!=='Deleted video'}).map(function(i){var id=i.contentDetails.videoId;return{id:id,t:i.snippet.title,c:r.id,cn:r.title,av:r.th,d:i.contentDetails.videoPublishedAt||i.snippet.publishedAt,th:thumb(id)}})
+   }).catch(function(e){ST[r.id]=emsg(e);if(fatal(e))throw e;return[]})
+  }))
+ }).then(function(a){var v=[].concat.apply([],a);v.sort(function(x,y){return x.d<y.d?1:-1});return details(v)}).then(function(v){SV=v;sv('mc_feed',{t:Date.now(),sig:sig,v:v,st:ST})})
+}
+function mk(id,s){return{id:id,t:s.title,c:s.channelId,cn:s.channelTitle,av:'',d:s.publishedAt,th:thumb(id)}}
+function loadAll(q,force){
+ if(!q){var c=ld('mc_pop',null);if(!force&&c&&Date.now()-c.t<18e5){OV=c.v;return Promise.resolve()}}
+ var p=q?api('search',{part:'snippet',type:'video',q:q,maxResults:24,regionCode:'IN'}).then(function(j){return details((j.items||[]).map(function(i){return mk(i.id.videoId,i.snippet)}))})
+  :api('videos',{part:'snippet,contentDetails,statistics',chart:'mostPopular',regionCode:'IN',maxResults:30}).then(function(j){return(j.items||[]).map(function(i){var o=mk(i.id,i.snippet);o.du=i.contentDetails.duration;o.vw=i.statistics&&i.statistics.viewCount;return o})});
+ return p.then(function(v){OV=v;if(!q)sv('mc_pop',{t:Date.now(),v:v})});
+}
+
+function msg(t){$('grid').innerHTML='<div class="msg">'+esc(t)+'</div>'}
+function chips(){
+ var c=$('chips');
+ if(!SEL){c.style.display='none';return}
+ c.style.display='block';
+ var seen={},h='<span class="chip fx'+(ACT?'':' on')+'" tabindex="0" data-c="">Sab</span>';
+ CH.forEach(function(s){var r=RES[s];if(r&&r.id&&!seen[r.id]){seen[r.id]=1;h+='<span class="chip fx'+(ACT===r.id?' on':'')+'" tabindex="0" data-c="'+r.id+'">'+esc(r.title)+'</span>'}});
+ c.innerHTML=h;
+}
+function drawGrid(){
+ var q=Q.toLowerCase(),src=SEL?SV:OV;
+ VIEW=src.filter(function(x){return!SEL||((!ACT||x.c===ACT)&&(!q||x.t.toLowerCase().indexOf(q)>-1||x.cn.toLowerCase().indexOf(q)>-1))});
+ if(!VIEW.length){msg(SEL&&(q||ACT)?'Is search/channel me koi video nahi mila.':'Koi video nahi mila.');return}
+ var h='';
+ VIEW.slice(0,SHOW).forEach(function(x,i){
+  var d=dur(x.du),v=x.vw?nf(x.vw)+' · ':'';
+  var av=x.av?'<img class="av" src="'+esc(x.av)+'" alt="">':'<div class="av">'+esc((x.cn||'?').charAt(0).toUpperCase())+'</div>';
+  h+='<div class="card fx" tabindex="0" data-i="'+i+'"><div class="th"><img src="'+x.th+'" alt="">'+(d?'<span class="du">'+d+'</span>':'')+'</div><div class="mt">'+av+'<div><div class="tt">'+esc(x.t)+'</div><div class="sub">'+esc(x.cn)+'<br>'+v+ago(x.d)+'</div></div></div></div>';
+ });
+ if(VIEW.length>SHOW)h+='<div style="width:100%"><div class="more fx" tabindex="0" id="more">Aur dikhao</div></div>';
+ $('grid').innerHTML=h;
+}
+function ui(){
+ $('mode').checked=SEL;
+ $('q').placeholder=SEL?'Mere channels me search karo':'YouTube pe search karo';
+ $('hint').textContent=SEL?'ON: sirf aapke chosen channels. Search bhi inhi videos me hota hai (free). Poore YouTube ke liye switch OFF karo.':'OFF: poora YouTube (popular videos). Search likh ke Enter dabao (har search me 100 quota lagta hai).';
+}
+function refresh(force){
+ chips();
+ if(!KEY){msg('Pehle ⚙ Settings me apni YouTube API key daalo.');return}
+ var tk=++TK;msg('Load ho raha hai…');
+ var p=SEL?loadSel(force):loadAll(OQ,force);
+ p.then(function(){if(tk!==TK)return;SHOW=36;chips();drawGrid()}).catch(function(e){if(tk===TK)msg('Error: '+emsg(e))});
+}
+
+var OVS=['pl','st'];
+function openOv(){for(var i=0;i<OVS.length;i++)if($(OVS[i]).className.indexOf('show')>-1)return OVS[i];return''}
+function show(id){LF=document.activeElement;$(id).className='ov show';var f=$(id).querySelector('.fx');if(f&&TV)f.focus()}
+function hide(id){$(id).className='ov';if(id==='pl'){$('vp').innerHTML='';PL=null}if(LF&&LF.focus)try{LF.focus()}catch(e){}}
+var DC={},PL=null,NX=null,RLIST=[],LP=0;
+function avh(x){return x.av?'<img class="av" src="'+esc(x.av)+'" alt="">':'<div class="av">'+esc((x.cn||'?').charAt(0).toUpperCase())+'</div>'}
+function vinfo(x,d){
+ var v=d.v||x.vw;
+ $('vi').innerHTML='<div class="vt">'+esc(x.t)+'</div><div class="vm">'+(v?nf(v)+' · ':'')+ago(x.d)+'</div><div class="vc">'+avh(x)+'<b>'+esc(x.cn)+'</b>'+(d.l?'<span class="lk">&#128077; '+nf(d.l).replace(' views','')+'</span>':'')+'</div>'+(d.d?'<div class="vd fx" tabindex="0" id="vd">'+esc(d.d)+'</div>':'');
+}
+function play(x){
+ PL=x;LP=Date.now();
+ $('vp').innerHTML='<iframe id="vf" src="https://www.youtube-nocookie.com/embed/'+x.id+'?autoplay=1&rel=0&playsinline=1&enablejsapi=1" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>';
+ var f=$('vf');f.onload=function(){try{f.contentWindow.postMessage(JSON.stringify({event:'listening',id:1,channel:'widget'}),'*')}catch(e){}};
+ vinfo(x,DC[x.id]||{});
+ if(!DC[x.id]&&KEY)api('videos',{part:'snippet,statistics',id:x.id}).then(function(j){var i=j.items&&j.items[0];if(i){DC[x.id]={d:i.snippet.description,l:i.statistics.likeCount,v:i.statistics.viewCount};if(PL===x)vinfo(x,DC[x.id])}}).catch(function(){});
+ var a=VIEW.length?VIEW:(SEL?SV:OV),i=-1,k;
+ for(k=0;k<a.length;k++)if(a[k].id===x.id){i=k;break}
+ RLIST=a.slice(i+1).concat(a.slice(0,i<0?0:i)).filter(function(y){return y.id!==x.id}).slice(0,25);
+ NX=RLIST[0]||null;
+ var h=RLIST.length?'<div class="nx">Aage ke videos</div>':'';
+ RLIST.forEach(function(y,j){var d=dur(y.du);h+='<div class="rw fx" tabindex="0" data-j="'+j+'"><div class="rt"><div class="th"><img src="'+y.th+'" alt="">'+(d?'<span class="du">'+d+'</span>':'')+'</div></div><div><div class="tt">'+esc(y.t)+'</div><div class="sub">'+esc(y.cn)+'<br>'+(y.vw?nf(y.vw)+' · ':'')+ago(y.d)+'</div></div></div>'});
+ $('rl').innerHTML=h;
+ if($('pl').className.indexOf('show')<0)show('pl');
+ $('pl').scrollTop=0;
+}
+function stat(){
+ var cnt={},h='';
+ SV.forEach(function(x){cnt[x.c]=(cnt[x.c]||0)+1});
+ CH.forEach(function(s){
+  var r=RES[s],e=ST[s]||(r&&ST[r.id]);
+  if(r&&r.id&&!e)h+='<div class="sr">✅ '+esc(r.title)+' <span>('+(cnt[r.id]||0)+' videos)</span></div>';
+  else h+='<div class="sr">❌ '+esc(s)+' <span>'+esc(e||'abhi load nahi hua')+'</span></div>';
+ });
+ $('ss').innerHTML=h||'<div class="sr"><span>Koi channel nahi</span></div>';
+}
+function lines(){var seen={},a=[];$('ci').value.split(/\r?\n/).forEach(function(s){s=s.trim();if(s&&!seen[s]){seen[s]=1;a.push(s)}});return a}
+
+$('mode').addEventListener('change',function(){
+ SEL=this.checked;sv('mc_mode',SEL);Q='';OQ='';ACT='';$('q').value='';ui();refresh(false);
+});
+$('rf').addEventListener('click',function(){refresh(true)});
+$('gs').addEventListener('click',function(){$('ki').value=KEY;$('ci').value=CH.join('\n');$('sl').style.display='none';stat();show('st')});
+$('sc').addEventListener('click',function(){hide('st')});
+$('pc').addEventListener('click',function(){hide('pl')});
+$('ss2').addEventListener('click',function(){
+ KEY=$('ki').value.trim();CH=lines();sv('mc_key',KEY);sv('mc_ch',CH);
+ try{L.removeItem('mc_feed');L.removeItem('mc_pop')}catch(e){}
+ hide('st');ACT='';refresh(true);
+});
+$('cc').addEventListener('click',function(){
+ try{L.removeItem('mc_feed');L.removeItem('mc_pop');L.removeItem('mc_res')}catch(e){}
+ RES={};hide('st');refresh(true);
+});
+$('mk').addEventListener('click',function(){
+ var o={k:$('ki').value.trim(),c:lines()},u=location.origin+location.pathname+'#cfg='+encodeURIComponent(btoa(unescape(encodeURIComponent(JSON.stringify(o)))));
+ var i=$('sl');i.style.display='block';i.value=u;i.focus();i.select();
+ try{if(navigator.clipboard)navigator.clipboard.writeText(u)}catch(e){}
+ this.textContent='Link ban gaya (copy karo)';
+});
+$('q').addEventListener('input',function(){if(SEL){Q=this.value;SHOW=36;drawGrid()}});
+$('sf').addEventListener('submit',function(e){
+ e.preventDefault();
+ var v=$('q').value.trim();
+ if(SEL){Q=v;SHOW=36;drawGrid();$('q').blur()}
+ else{OQ=v;refresh(true);$('q').blur()}
+});
+$('chips').addEventListener('click',function(e){
+ var c=up(e.target,'chip');if(!c)return;
+ ACT=c.getAttribute('data-c');SHOW=36;chips();drawGrid();
+ var n=document.querySelectorAll('.chip');for(var i=0;i<n.length;i++)if(n[i].getAttribute('data-c')===ACT){if(TV)n[i].focus();break}
+});
+$('grid').addEventListener('click',function(e){
+ var m=up(e.target,'more');
+ if(m){var n=SHOW;SHOW+=36;drawGrid();var cs=document.querySelectorAll('.card');if(TV&&cs[n])cs[n].focus();return}
+ var c=up(e.target,'card');if(c){var x=VIEW[+c.getAttribute('data-i')];if(x)play(x)}
+});
+
+$('rl').addEventListener('click',function(e){var r=up(e.target,'rw');if(r){var y=RLIST[+r.getAttribute('data-j')];if(y)play(y)}});
+$('vi').addEventListener('click',function(e){var d=up(e.target,'vd');if(d)d.className=d.className.indexOf('open')>-1?'vd fx':'vd fx open'});
+window.addEventListener('message',function(e){
+ if(!PL||!NX||!/youtube/.test(e.origin||''))return;
+ try{
+  var m=typeof e.data==='string'?JSON.parse(e.data):e.data;
+  var end=m&&((m.event==='onStateChange'&&m.info===0)||(m.event==='infoDelivery'&&m.info&&m.info.playerState===0));
+  if(end&&Date.now()-LP>4000)play(NX);
+ }catch(x){}
+});
+function nav(k,e){
+ var o=openOv(),root=o?$(o):document;
+ var els=[].slice.call(root.querySelectorAll('.fx')).filter(function(x){return x.offsetWidth>0});
+ var a=document.activeElement,cur=a&&up(a,'fx');
+ if(!cur){if(els[0]){els[0].focus();e.preventDefault()}return}
+ var r=cur.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2,best=null,bd=1e9;
+ els.forEach(function(x){
+  if(x===cur)return;
+  var b=x.getBoundingClientRect(),dx=b.left+b.width/2-cx,dy=b.top+b.height/2-cy,ok,p,q;
+  if(k===37){ok=dx<-2;p=-dx;q=Math.abs(dy)}else if(k===39){ok=dx>2;p=dx;q=Math.abs(dy)}else if(k===38){ok=dy<-2;p=-dy;q=Math.abs(dx)}else{ok=dy>2;p=dy;q=Math.abs(dx)}
+  if(!ok)return;
+  var d=p+q*2.5;if(d<bd){bd=d;best=x}
+ });
+ if(best){best.focus();e.preventDefault()}
+}
+document.addEventListener('keydown',function(e){
+ var k=e.keyCode,t=e.target,tag=t&&t.tagName||'',inp=/INPUT|TEXTAREA/.test(tag),o=openOv();
+ if(k===27||k===461||k===10009||k===4||(k===8&&!inp)){if(o){hide(o);e.preventDefault()}return}
+ if(k===13&&t&&t.className&&String(t.className).indexOf('fx')>-1&&!/INPUT|TEXTAREA|BUTTON|^A$/.test(tag)){t.click();e.preventDefault();return}
+ if(TV&&k>=37&&k<=40){if(inp&&(k===37||k===39))return;nav(k,e)}
+});
+
+if('serviceWorker' in navigator&&/^https:/.test(location.protocol)&&location.hostname.indexOf('androidplatform')<0){navigator.serviceWorker.register('sw.js').catch(function(){})}
+ui();refresh(false);
+})();
+</script>
+</body>
+</html>
